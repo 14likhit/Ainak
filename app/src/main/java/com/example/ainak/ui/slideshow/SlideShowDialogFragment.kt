@@ -35,6 +35,7 @@ class SlideShowDialogFragment : DialogFragment(), ViewPager.OnPageChangeListener
     private var slideShowImageAdapter: SlideShowImageAdapter? = null
 
     private lateinit var homeActivity: HomeActivity
+    private var currentImage: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,9 +64,16 @@ class SlideShowDialogFragment : DialogFragment(), ViewPager.OnPageChangeListener
 
     private fun setView() {
         images = homeViewModel.getImagesList()
+        currentImage = homeViewModel.selectedImagePosition
         slideShowImageAdapter = SlideShowImageAdapter(activity!!, images!!)
         fragmentSlideShowDialogBinding.slideShowViewPager.adapter = slideShowImageAdapter
         fragmentSlideShowDialogBinding.slideShowViewPager.addOnPageChangeListener(this)
+        setCurrentItem()
+    }
+
+    private fun setCurrentItem() {
+        fragmentSlideShowDialogBinding.slideShowViewPager.setCurrentItem(currentImage, false)
+        displayImageInfo(currentImage)
     }
 
     private fun displayImageInfo(position: Int) {

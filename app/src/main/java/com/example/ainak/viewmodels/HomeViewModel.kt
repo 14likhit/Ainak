@@ -24,6 +24,10 @@ class HomeViewModel(private val remoteRepositoryClass: RemoteRepositoryClass) : 
     val imageResponseBodyLiveDataError: MutableLiveData<String> =
         MutableLiveData<String>()
 
+    var selectedImagePosition: Int = -1
+
+    var mainImageList: ArrayList<Photo>? = null
+
     fun getImages(imagesRequestBody: ImagesRequestBody) {
         disposables.add(
             remoteRepositoryClass.getImages(imagesRequestBody)

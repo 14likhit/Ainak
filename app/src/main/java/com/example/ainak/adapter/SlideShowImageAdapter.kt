@@ -48,5 +48,7 @@ class SlideShowImageAdapter(private var activity: Activity, private var images: 
         return images.size
     }
 
-
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        container.removeView(`object` as View)
+    }
 }
