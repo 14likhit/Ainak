@@ -24,9 +24,15 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+
         <include
             android:id="@+id/home_image_list_layout"
             layout="@layout/layout_image_list" />
+
+
+        <include
+            android:id="@+id/home_no_records_found_layout"
+            layout="@layout/layout_no_records_found" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
