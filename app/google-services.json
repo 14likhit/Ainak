@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "231619779993",
+    "firebase_url": "https://ainak-e8136.firebaseio.com",
+    "project_id": "ainak-e8136",
+    "storage_bucket": "ainak-e8136.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231619779993:android:4dc758b04bb0a55cc70708",
+        "android_client_info": {
+          "package_name": "com.example.ainak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "231619779993-5f7ua8f9ug4flqfb8rec6b8aljper0kj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ainak",
+            "certificate_hash": "d20bf211607da9ad2b2b0bc323e52ce5d0badefb"
+          }
+        },
+        {
+          "client_id": "231619779993-v6psqoo3qlk0c8ooij69j1srtab0qd7k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDybQ6F8q590T2QV3IyBzVu07QJM3ves50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "231619779993-v6psqoo3qlk0c8ooij69j1srtab0qd7k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
