@@ -63,7 +63,7 @@ class SlideShowDialogFragment : DialogFragment(), ViewPager.OnPageChangeListener
     }
 
     private fun setView() {
-        images = homeViewModel.getImagesList()
+        images = homeViewModel.mainImageList
         currentImage = homeViewModel.selectedImagePosition
         slideShowImageAdapter = SlideShowImageAdapter(activity!!, images!!)
         fragmentSlideShowDialogBinding.slideShowViewPager.adapter = slideShowImageAdapter

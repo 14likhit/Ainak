@@ -111,8 +111,6 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
 
         searchText = ImagesRequestBody.FLICKR_IMAGES_INITIAL_SEARCH_TEXT
 
-        showNoRecordsLayout(false)
-
 
         activityHomeBinding.homeImageListLayout.loadingAnimation.visibility = View.VISIBLE
 
