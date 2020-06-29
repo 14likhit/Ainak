@@ -12,6 +12,7 @@ import com.example.ainak.R
 import com.example.ainak.adapter.ImageListAdapter
 import com.example.ainak.base.BaseActivity
 import com.example.ainak.customlisteners.OnItemClickListener
+import com.example.ainak.customlisteners.RecyclerViewPaginator
 import com.example.ainak.data.models.ImagesRequestBody
 import com.example.ainak.data.models.Photo
 import com.example.ainak.data.remote.RemoteRepositoryClass
@@ -32,6 +33,8 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
     private var imageListAdapter: ImageListAdapter? = null
 
     private var imagesLayoutManager: GridLayoutManager? = null
+
+    private var isLoading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +60,12 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
     private fun addObservers() {
         homeViewModel.imageResponseBodyLiveData.observe(this, Observer { imageResponse ->
             if (imageResponse != null) {
-                setImages()
+                if (isLoading) {
+                    removeLoading()
+                    addImages()
+                } else {
+                    setImages()
+                }
             }
         })
     }
@@ -78,14 +86,41 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
             imagesLayoutManager
         activityHomeBinding.homeImageListLayout.imageListRecyclerView.itemAnimator =
             DefaultItemAnimator()
+        setScrollListener()
         activityHomeBinding.homeImageListLayout.imageListRecyclerView.adapter = imageListAdapter
 
         if (homeViewModel.getImagesList() != null) {
             setImages()
         } else {
-            homeViewModel.getImages(getImageRequestBody("", 1))
+            homeViewModel.getImages(
+                ImagesRequestBody.initialImageRequest()
+            )
         }
 
+    }
+
+    private fun setScrollListener() {
+        activityHomeBinding.homeImageListLayout.imageListRecyclerView.addOnScrollListener(object :
+            RecyclerViewPaginator(activityHomeBinding.homeImageListLayout.imageListRecyclerView) {
+            override fun isLastPage(): Boolean {
+                return false
+            }
+
+            override fun loadMore(start: Long?, count: Long?) {
+                addLoading()
+                loadMoreImageRequest(count!!.toInt())
+            }
+
+        })
+    }
+
+    private fun loadMoreImageRequest(page: Int) {
+        homeViewModel.getImages(
+            getImageRequestBody(
+                ImagesRequestBody.FLICKR_IMAGES_INITIAL_SEARCH_TEXT,
+                page
+            )
+        )
     }
 
     private fun getImageRequestBody(searchQuery: String, pages: Int): ImagesRequestBody {
@@ -97,6 +132,21 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
         images = homeViewModel.getImagesList()
         imageListAdapter!!.images = images
         imageListAdapter!!.notifyDataSetChanged()
+    }
+
+    private fun addImages() {
+        images!!.addAll(homeViewModel.getImagesList()!!)
+        imageListAdapter!!.addItems(homeViewModel.getImagesList())
+    }
+
+    private fun addLoading() {
+        isLoading = true
+        imageListAdapter!!.addLoading()
+    }
+
+    private fun removeLoading() {
+        isLoading = false
+        imageListAdapter!!.removeLoading()
     }
 
     override fun onItemClick(item: Photo, position: Int, view: View?) {
