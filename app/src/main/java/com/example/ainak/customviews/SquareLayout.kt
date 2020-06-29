@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 
-
+/**
+ * Custom Layout for Images.
+ */
 internal class SquareLayout : RelativeLayout {
 
     constructor(context: Context?) : super(context) {}

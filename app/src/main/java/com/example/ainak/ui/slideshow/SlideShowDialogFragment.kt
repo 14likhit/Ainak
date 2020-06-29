@@ -16,6 +16,9 @@ import com.example.ainak.ui.home.HomeActivity
 import com.example.ainak.viewmodelfactories.HomeViewModelFactory
 import com.example.ainak.viewmodels.HomeViewModel
 
+/**
+ * Dialog Fragment to show selected images in dialog.
+ */
 class SlideShowDialogFragment : DialogFragment(), ViewPager.OnPageChangeListener {
 
     companion object {

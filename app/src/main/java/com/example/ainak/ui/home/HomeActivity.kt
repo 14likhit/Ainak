@@ -32,6 +32,9 @@ import com.example.ainak.viewmodelfactories.HomeViewModelFactory
 import com.example.ainak.viewmodels.HomeViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
 
+/**
+ * Main Single Page Home Activity for the Application.
+ */
 class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
 
     private lateinit var activityHomeBinding: ActivityHomeBinding

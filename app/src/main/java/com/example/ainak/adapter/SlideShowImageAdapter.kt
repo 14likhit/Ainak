@@ -12,6 +12,9 @@ import com.example.ainak.data.models.Photo
 import com.example.ainak.databinding.ImageFullScreenPreviewBinding
 import com.example.ainak.utils.Utils
 
+/**
+ * PagerAdapter for Image Dialog.
+ */
 
 class SlideShowImageAdapter(private var activity: Activity, private var images: ArrayList<Photo>) :
     PagerAdapter() {

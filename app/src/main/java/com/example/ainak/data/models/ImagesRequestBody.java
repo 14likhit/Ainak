@@ -2,6 +2,9 @@ package com.example.ainak.data.models;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Image Request Body
+ */
 public class ImagesRequestBody {
 
     public static final String FLICKR_METHOD = "flickr.photos.search";

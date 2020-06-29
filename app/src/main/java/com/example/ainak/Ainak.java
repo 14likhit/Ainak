@@ -8,6 +8,9 @@ import com.example.ainak.network.ApiClient;
 
 import timber.log.Timber;
 
+/**
+ * Application Class for  Ainak
+ */
 public class Ainak extends Application {
 
     @Override

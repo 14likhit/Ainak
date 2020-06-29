@@ -2,6 +2,9 @@ package com.example.ainak.data.models;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Image Response Body
+ */
 public class ImageResponseBody {
 
     @SerializedName("photos")
