@@ -6,6 +6,7 @@ public class ImagesRequestBody {
 
     public static final String FLICKR_METHOD = "flickr.photos.search";
     public static final String FLICKR_API_KEY = "062a6c0c49e4de1d78497d13a7dbb360";
+    public static final String FLICKR_IMAGES_INITIAL_SEARCH_TEXT = "welcome";
     public static final String FLICKR_REQUEST_FORMAT = "json";
     public static final Integer FLICKR_NO_JSON_CALLBACK = 1;
     public static final Integer FLICKR_IMAGES_PER_PAGE = 10;
@@ -95,5 +96,9 @@ public class ImagesRequestBody {
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    public static ImagesRequestBody initialImageRequest() {
+        return new ImagesRequestBody(FLICKR_IMAGES_INITIAL_SEARCH_TEXT, 1);
     }
 }
