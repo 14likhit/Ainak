@@ -122,7 +122,7 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
             )
         }
 
-        activityHomeBinding.homeNoRecordsFoundLayout.retryButton.setOnClickListener(View.OnClickListener {
+        activityHomeBinding.homeNoRecordsFoundLayout.retryButton.setOnClickListener {
             if (isLoading) {
                 loadMoreImageRequest(currentPage!!)
             } else {
@@ -130,7 +130,14 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
                     ImagesRequestBody.initialImageRequest()
                 )
             }
-        })
+        }
+
+        activityHomeBinding.floatingActionButton.setOnClickListener {
+            activityHomeBinding.homeImageListLayout.imageListRecyclerView.smoothScrollToPosition(
+                0
+            )
+            activityHomeBinding.floatingActionButton.visibility = View.GONE
+        }
 
     }
 
@@ -187,6 +194,7 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
         homeViewModel.mainImageList!!.addAll(images!!)
         imageListAdapter!!.addItems(homeViewModel.getImagesList())
         activityHomeBinding.homeImageListLayout.loadingAnimation.visibility = View.GONE
+        activityHomeBinding.floatingActionButton.visibility = View.VISIBLE
     }
 
     private fun addLoading() {

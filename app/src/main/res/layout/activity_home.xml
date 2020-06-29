@@ -34,5 +34,16 @@
             android:id="@+id/home_no_records_found_layout"
             layout="@layout/layout_no_records_found" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/dimen_16_dp"
+            android:src="@drawable/ic_arrow_up_24dp"
+            android:visibility="gone"
+            app:fabSize="mini" />
+
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
