@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuItemCompat
@@ -177,6 +178,20 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
                 android.R.color.transparent
             )
         )
+
+        searchView.setOnSearchClickListener {
+            val view = findViewById<TextView>(R.id.toolbar_title_text_view)
+            view.visibility = View.GONE
+        }
+
+
+        searchView.setOnCloseListener(object : SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                val view = findViewById<TextView>(R.id.toolbar_title_text_view)
+                view.visibility = View.VISIBLE
+                return false
+            }
+        })
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
