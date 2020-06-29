@@ -26,6 +26,7 @@ class SplashActivity : BaseActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 ActivityLauncher.launchHomeActivity(this@SplashActivity)
+                finish()
             }
     }
 }
