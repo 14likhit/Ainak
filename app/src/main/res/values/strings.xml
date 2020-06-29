@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Ainak</string>
     <string name="sample_image_title">Sample Image Title</string>
+    <string name="search">Search</string>
 </resources>
