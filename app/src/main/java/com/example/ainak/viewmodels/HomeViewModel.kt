@@ -41,10 +41,12 @@ class HomeViewModel(private val remoteRepositoryClass: RemoteRepositoryClass) : 
     }
 
     fun getImagesList(): ArrayList<Photo>? {
-        if (imageResponseBodyLiveData.value != null) {
+        if (imageResponseBodyLiveData.value != null && imageResponseBodyLiveData.value!!.photos != null) {
             return imageResponseBodyLiveData.value!!.photos.photo as ArrayList<Photo>
+        } else {
+            imageResponseBodyLiveDataError.value = "Error Loading Data"
+            return null
         }
-        return null
     }
 
     override fun onCleared() {
