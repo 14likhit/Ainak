@@ -1,6 +1,6 @@
 # Ainak
 
-Ainak is Image Searching app usinf flickr apis.
+Ainak is Image Searching app using flickr apis.
 
 # Tech
 
