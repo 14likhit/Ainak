@@ -11,10 +11,18 @@
         android:id="@+id/image_list_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".ui.home.HomeActivity"
         tools:showIn="@layout/activity_home">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_animation"
+            android:layout_width="@dimen/dimen_150_dp"
+            android:layout_height="@dimen/dimen_150_dp"
+            android:layout_centerInParent="true"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="loading_main.json"
+            app:lottie_loop="true" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/image_list_recycler_view"

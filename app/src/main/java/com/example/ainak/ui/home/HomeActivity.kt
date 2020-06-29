@@ -47,6 +47,7 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
     private lateinit var searchView: SearchView
 
     private var searchText: String? = null
+    private var currentPage: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +82,11 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
                     setImages()
                 }
             }
+            showNoRecordsLayout(false)
+        })
+
+        homeViewModel.imageResponseBodyLiveDataError.observe(this, Observer { imageResponse ->
+            showNoRecordsLayout(true)
         })
     }
 
@@ -102,7 +108,13 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
         setScrollListener()
         activityHomeBinding.homeImageListLayout.imageListRecyclerView.adapter = imageListAdapter
 
+
         searchText = ImagesRequestBody.FLICKR_IMAGES_INITIAL_SEARCH_TEXT
+
+        showNoRecordsLayout(false)
+
+
+        activityHomeBinding.homeImageListLayout.loadingAnimation.visibility = View.VISIBLE
 
         if (homeViewModel.getImagesList() != null) {
             setImages()
@@ -112,6 +124,24 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
             )
         }
 
+        activityHomeBinding.homeNoRecordsFoundLayout.retryButton.setOnClickListener(View.OnClickListener {
+            if (isLoading) {
+                loadMoreImageRequest(currentPage!!)
+            } else {
+                homeViewModel.getImages(
+                    ImagesRequestBody.initialImageRequest()
+                )
+            }
+        })
+
+    }
+
+
+    private fun showNoRecordsLayout(hasToShow: Boolean) {
+        activityHomeBinding.homeImageListLayout.imageListRelativeLayout.visibility =
+            if (hasToShow) View.GONE else View.VISIBLE
+        activityHomeBinding.homeNoRecordsFoundLayout.noRecordsFoundConstraintLayout.visibility =
+            if (hasToShow) View.VISIBLE else View.GONE
     }
 
     private fun setScrollListener() {
@@ -130,6 +160,7 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
     }
 
     private fun loadMoreImageRequest(page: Int) {
+        currentPage = page
         homeViewModel.getImages(
             getImageRequestBody(
                 searchText!!,
@@ -144,13 +175,17 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
 
     private fun setImages() {
         images = homeViewModel.getImagesList()
+        homeViewModel.mainImageList = images
         imageListAdapter!!.images = images
         imageListAdapter!!.notifyDataSetChanged()
+        activityHomeBinding.homeImageListLayout.loadingAnimation.visibility = View.GONE
     }
 
     private fun addImages() {
         images!!.addAll(homeViewModel.getImagesList()!!)
+        homeViewModel.mainImageList!!.addAll(images!!)
         imageListAdapter!!.addItems(homeViewModel.getImagesList())
+        activityHomeBinding.homeImageListLayout.loadingAnimation.visibility = View.GONE
     }
 
     private fun addLoading() {
@@ -211,16 +246,18 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
     }
 
     private fun fetchSearchResult(query: String?) {
-        imageListAdapter!!.clear();
-        imageListAdapter!!.addLoading()
-        searchText = query
-        homeViewModel.getImages(getImageRequestBody(searchText!!, 1))
+        if (images != null && images!!.size > 0) {
+            imageListAdapter!!.clear();
+            imageListAdapter!!.addLoading()
+            searchText = query
+            homeViewModel.getImages(getImageRequestBody(searchText!!, 1))
+        }
     }
-
 
     override fun onItemClick(item: Photo, position: Int, view: View?) {
         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
         val newFragment: SlideShowDialogFragment = SlideShowDialogFragment.newInstance()
+        homeViewModel.selectedImagePosition = position
         newFragment.show(ft, newFragment.tag)
     }
 }
