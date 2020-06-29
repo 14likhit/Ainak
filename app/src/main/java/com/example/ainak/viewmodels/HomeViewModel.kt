@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.ainak.data.models.ImageResponseBody
 import com.example.ainak.data.models.ImagesRequestBody
+import com.example.ainak.data.models.Photo
 import com.example.ainak.data.remote.RemoteRepositoryClass
 import com.google.gson.Gson
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -33,6 +34,13 @@ class HomeViewModel(private val remoteRepositoryClass: RemoteRepositoryClass) : 
                         Gson().fromJson(result, ImageResponseBody::class.java)
                 }, { throwable -> imageResponseBodyLiveDataError.value = "Error Loading Data" })
         )
+    }
+
+    fun getImagesList(): ArrayList<Photo>? {
+        if (imageResponseBodyLiveData.value != null) {
+            return imageResponseBodyLiveData.value!!.photos.photo as ArrayList<Photo>
+        }
+        return null
     }
 
     override fun onCleared() {
