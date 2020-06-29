@@ -25,6 +25,7 @@ class HomeViewModel(private val remoteRepositoryClass: RemoteRepositoryClass) : 
         MutableLiveData<String>()
 
     var selectedImagePosition: Int = -1
+    var totalPage: Int = -1
 
     var mainImageList: ArrayList<Photo>? = null
 
@@ -42,9 +43,9 @@ class HomeViewModel(private val remoteRepositoryClass: RemoteRepositoryClass) : 
 
     fun getImagesList(): ArrayList<Photo>? {
         if (imageResponseBodyLiveData.value != null && imageResponseBodyLiveData.value!!.photos != null) {
+            totalPage = imageResponseBodyLiveData.value!!.photos!!.pages
             return imageResponseBodyLiveData.value!!.photos.photo as ArrayList<Photo>
         } else {
-            imageResponseBodyLiveDataError.value = "Error Loading Data"
             return null
         }
     }

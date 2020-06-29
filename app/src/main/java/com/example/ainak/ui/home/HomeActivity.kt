@@ -146,6 +146,9 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
         activityHomeBinding.homeImageListLayout.imageListRecyclerView.addOnScrollListener(object :
             RecyclerViewPaginator(activityHomeBinding.homeImageListLayout.imageListRecyclerView) {
             override fun isLastPage(): Boolean {
+                if (currentPage == homeViewModel.totalPage) {
+                    return true
+                }
                 return false
             }
 

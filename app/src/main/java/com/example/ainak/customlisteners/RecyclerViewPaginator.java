@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ainak.data.models.ImagesRequestBody;
 
+import static android.view.View.SCROLL_AXIS_VERTICAL;
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 /**
@@ -54,7 +55,7 @@ public abstract class RecyclerViewPaginator extends RecyclerView.OnScrollListene
     @Override
     public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
-        if (newState == SCROLL_STATE_IDLE) {
+        if (newState == SCROLL_STATE_IDLE || newState == SCROLL_AXIS_VERTICAL) {
             int visibleItemCount = layoutManager.getChildCount();
             int totalItemCount = layoutManager.getItemCount();
 
