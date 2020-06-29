@@ -30,6 +30,7 @@ import com.example.ainak.network.ApiClient
 import com.example.ainak.ui.slideshow.SlideShowDialogFragment
 import com.example.ainak.viewmodelfactories.HomeViewModelFactory
 import com.example.ainak.viewmodels.HomeViewModel
+import com.google.firebase.analytics.FirebaseAnalytics
 
 class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
 
@@ -49,6 +50,8 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
     private var searchText: String? = null
     private var currentPage: Int? = null
 
+    private var mFirebaseAnalytics: FirebaseAnalytics? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
@@ -66,6 +69,10 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
                 homeViewModelFactory
             ).get(HomeViewModel::class.java)
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        mFirebaseAnalytics!!.logEvent("Entered_HOME_Screen_Event", null)
+
         addObservers()
 
         initView()
@@ -82,10 +89,12 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
                     setImages()
                 }
             }
+            mFirebaseAnalytics!!.logEvent("Images_fetch_Event_succes", null)
             showNoRecordsLayout(false)
         })
 
         homeViewModel.imageResponseBodyLiveDataError.observe(this, Observer { imageResponse ->
+            mFirebaseAnalytics!!.logEvent("Images_fetch_Event_failed", null)
             showNoRecordsLayout(true)
         })
     }
