@@ -2,9 +2,11 @@ package com.example.ainak.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ainak.R
+import com.example.ainak.customlisteners.OnItemClickListener
 import com.example.ainak.data.models.Photo
 import com.example.ainak.databinding.LayoutImageItemBinding
 import com.example.ainak.utils.Utils
@@ -13,7 +15,10 @@ import com.example.ainak.utils.Utils
  * Adapter for Image List
  */
 
-class ImageListAdapter(private val mContext: Context) :
+class ImageListAdapter(
+    private val mContext: Context,
+    private val onItemClickListener: OnItemClickListener<Photo>
+) :
     RecyclerView.Adapter<ImageListAdapter.ImageListViewHolder>() {
 
     var images: MutableList<Photo>? = null
@@ -47,6 +52,14 @@ class ImageListAdapter(private val mContext: Context) :
                 R.drawable.ic_logo,
                 holder.binding.imageItemView
             )
+
+            holder.binding.imageSquareLayout.setOnClickListener {
+                onItemClickListener.onItemClick(
+                    photo,
+                    position,
+                    holder.itemView
+                )
+            }
         }
     }
 

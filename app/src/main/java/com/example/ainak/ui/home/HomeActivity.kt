@@ -1,7 +1,9 @@
 package com.example.ainak.ui.home
 
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -9,15 +11,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ainak.R
 import com.example.ainak.adapter.ImageListAdapter
 import com.example.ainak.base.BaseActivity
+import com.example.ainak.customlisteners.OnItemClickListener
 import com.example.ainak.data.models.ImagesRequestBody
 import com.example.ainak.data.models.Photo
 import com.example.ainak.data.remote.RemoteRepositoryClass
 import com.example.ainak.databinding.ActivityHomeBinding
 import com.example.ainak.network.ApiClient
+import com.example.ainak.ui.slideshow.SlideShowDialogFragment
 import com.example.ainak.viewmodelfactories.HomeViewModelFactory
 import com.example.ainak.viewmodels.HomeViewModel
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
 
     private lateinit var activityHomeBinding: ActivityHomeBinding
 
@@ -61,7 +65,7 @@ class HomeActivity : BaseActivity() {
 
     private fun initView() {
         if (imageListAdapter == null) {
-            imageListAdapter = ImageListAdapter(this)
+            imageListAdapter = ImageListAdapter(this, this)
         }
 
         if (images == null) {
@@ -93,5 +97,11 @@ class HomeActivity : BaseActivity() {
         images = homeViewModel.getImagesList()
         imageListAdapter!!.images = images
         imageListAdapter!!.notifyDataSetChanged()
+    }
+
+    override fun onItemClick(item: Photo, position: Int, view: View?) {
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        val newFragment: SlideShowDialogFragment = SlideShowDialogFragment.newInstance()
+        newFragment.show(ft, newFragment.tag)
     }
 }
