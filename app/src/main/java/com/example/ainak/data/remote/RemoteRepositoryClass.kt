@@ -28,7 +28,7 @@ class RemoteRepositoryClass(private val service: ApiService) : RemoteRepository 
         val imagesRequestBodyMap: MutableMap<String, String> = HashMap<String, String>()
         imagesRequestBodyMap["method"] = imagesRequestBody.method
         imagesRequestBodyMap["api_key"] = imagesRequestBody.apiKey
-        imagesRequestBodyMap["text"] = "wrong"
+        imagesRequestBodyMap["text"] = imagesRequestBody.text
         imagesRequestBodyMap["format"] = imagesRequestBody.format
         imagesRequestBodyMap["nojsoncallback"] = imagesRequestBody.nojsoncallback.toString()
         imagesRequestBodyMap["per_page"] = imagesRequestBody.perPage.toString()

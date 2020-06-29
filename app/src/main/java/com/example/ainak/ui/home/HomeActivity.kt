@@ -1,7 +1,15 @@
 package com.example.ainak.ui.home
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
@@ -35,10 +43,15 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
     private var imagesLayoutManager: GridLayoutManager? = null
 
     private var isLoading: Boolean = false
+    private lateinit var searchView: SearchView
+
+    private var searchText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+
+        setupToolbar(getString(R.string.app_name), false)
 
         homeViewModelFactory =
             HomeViewModelFactory(
@@ -70,7 +83,6 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
         })
     }
 
-
     private fun initView() {
         if (imageListAdapter == null) {
             imageListAdapter = ImageListAdapter(this, this)
@@ -88,6 +100,8 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
             DefaultItemAnimator()
         setScrollListener()
         activityHomeBinding.homeImageListLayout.imageListRecyclerView.adapter = imageListAdapter
+
+        searchText = ImagesRequestBody.FLICKR_IMAGES_INITIAL_SEARCH_TEXT
 
         if (homeViewModel.getImagesList() != null) {
             setImages()
@@ -117,7 +131,7 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
     private fun loadMoreImageRequest(page: Int) {
         homeViewModel.getImages(
             getImageRequestBody(
-                ImagesRequestBody.FLICKR_IMAGES_INITIAL_SEARCH_TEXT,
+                searchText!!,
                 page
             )
         )
@@ -126,7 +140,6 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
     private fun getImageRequestBody(searchQuery: String, pages: Int): ImagesRequestBody {
         return ImagesRequestBody(searchQuery, pages)
     }
-
 
     private fun setImages() {
         images = homeViewModel.getImagesList()
@@ -149,9 +162,51 @@ class HomeActivity : BaseActivity(), OnItemClickListener<Photo> {
         imageListAdapter!!.removeLoading()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_menu, menu)
+        val searchItem: MenuItem = menu!!.findItem(R.id.action_search)
+        searchView = MenuItemCompat.getActionView(searchItem) as SearchView
+        val searchPlate =
+            searchView.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
+        searchPlate.hint = "Search"
+        val searchPlateView: View =
+            searchView.findViewById(androidx.appcompat.R.id.search_plate)
+        searchPlateView.setBackgroundColor(
+            ContextCompat.getColor(
+                this,
+                android.R.color.transparent
+            )
+        )
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                fetchSearchResult(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
+        val searchManager =
+            getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun fetchSearchResult(query: String?) {
+        imageListAdapter!!.clear();
+        imageListAdapter!!.addLoading()
+        searchText = query
+        homeViewModel.getImages(getImageRequestBody(searchText!!, 1))
+    }
+
+
     override fun onItemClick(item: Photo, position: Int, view: View?) {
         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
         val newFragment: SlideShowDialogFragment = SlideShowDialogFragment.newInstance()
         newFragment.show(ft, newFragment.tag)
     }
 }
+
